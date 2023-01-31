@@ -1,0 +1,74 @@
+<p-toast></p-toast>
+
+<div class="card">
+    <p-toolbar styleClass="p-mb-4">
+        <ng-template pTemplate="left">
+            <!-- 
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openNew()"></button>
+            <button pButton pRipple [label]="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button>
+       -->
+       
+            <div class="field col-12 md:col-12">
+
+                <p-calendar [(ngModel)]="rangeDates" selectionMode="range" [readonlyInput]="true" inputId="range"
+                    [showTime]="true" [showSeconds]="true"></p-calendar>
+                <button pButton pRipple label="Search" icon="pi pi-search" class="p-button-success p-mr-2"
+                    (click)="salesByRangeDate()"></button>
+            </div>
+
+            <button pButton pRipple type="button" label="Products" class="p-button-outlined" routerLink="/products" routerLinkActive="active" ariaCurrentWhenActive="page"></button>
+        </ng-template>
+
+        <ng-template pTemplate="right">
+
+        </ng-template>
+    </p-toolbar>
+
+    <p-table #dt [value]="sales" [rows]="10" [paginator]="true" [globalFilterFields]="['price']" [rowHover]="true"
+        dataKey="id" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [showCurrentPageReport]="true">
+
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th pSortableColumn="name">Product<p-sortIcon field="name"></p-sortIcon></th>
+                <th pSortableColumn="quantity">quantity<p-sortIcon field="quantity"></p-sortIcon></th>
+                <th pSortableColumn="price">price<p-sortIcon field="price"></p-sortIcon></th>
+                <th pSortableColumn="totalPrice">totalPrice <p-sortIcon field="totalPrice"></p-sortIcon></th>
+                <th pSortableColumn="date">date <p-sortIcon field="date"></p-sortIcon></th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-sale>
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="sales"></p-tableCheckbox>
+                </td>
+                <td>{{sale.product.name}}</td>
+                <td>{{sale.quantity}}</td>
+                <td>{{sale.price | currency:'USD'}}</td>
+                <td>{{sale.totalPrice | currency:'USD' }}</td>
+                <td>{{sale.date}}</td>
+                <td>
+
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2"
+                        disabled></button>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                        disabled></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="p-d-flex p-ai-center p-jc-between">
+                In total there are {{sales ? sales.length : 0 }} sales.
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+
+
+
+
+<p-confirmDialog [style]="{width: '450px'}"></p-confirmDialog>
